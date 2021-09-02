@@ -1,3 +1,4 @@
+import { BackendValidationPipe } from "@app/shared/pipes/backendValidation.pipe";
 import { User } from "@app/user/decorators/user.decorator";
 import { AuthGuard } from "@app/user/guards/auth.guard";
 import { UserEntity } from "@app/user/user.entity";
@@ -45,7 +46,7 @@ export class ArticleController {
 
     @Post()
     @UseGuards(AuthGuard)
-    @UsePipes(new ValidationPipe())
+    @UsePipes(new BackendValidationPipe())
     async create(@User() user: UserEntity, @Body('article') createArticleDto: CreateArticleDto): Promise<ArticleResponseInterface> {
         const article =  await this.articleService.create(user, createArticleDto);
         return this.articleService.buildArticleResponse(article);
@@ -67,7 +68,7 @@ export class ArticleController {
 
     @Put(':slug')
     @UseGuards(AuthGuard)
-    @UsePipes(new ValidationPipe())
+    @UsePipes(new BackendValidationPipe())
     async update(@User('id') userId: number, @Param('slug') slug: string, @Body('article') updateArticleDto: CreateArticleDto): Promise<ArticleResponseInterface>
     {
         const article = await this.articleService.update(userId, slug, updateArticleDto);

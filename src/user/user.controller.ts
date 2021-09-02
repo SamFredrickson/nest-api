@@ -9,6 +9,7 @@ import { User } from "./decorators/user.decorator";
 import { UserEntity } from "./user.entity";
 import { AuthGuard } from "./guards/auth.guard";
 import { UpdateUserDto } from "./dto/updateUser.dto";
+import { BackendValidationPipe } from "@app/shared/pipes/backendValidation.pipe";
 
 @Controller()
 export class UserController {
@@ -18,14 +19,14 @@ export class UserController {
     ) {}
 
     @Post('users')
-    @UsePipes(new ValidationPipe())
+    @UsePipes(new BackendValidationPipe())
     async create(@Body('user') createUserDto: CreateUserDto): Promise<UserResponseIntreface> {
         const user = await this.userService.create(createUserDto);
         return this.userService.buildUserResponse(user);
     }
 
     @Post('users/login')
-    @UsePipes(new ValidationPipe())
+    @UsePipes(new BackendValidationPipe())
     async login(@Body('user') LoginUserDto: LoginUserDto): Promise<UserResponseIntreface> {
         const user = await this.userService.login(LoginUserDto);
         return this.userService.buildUserResponse(user);
